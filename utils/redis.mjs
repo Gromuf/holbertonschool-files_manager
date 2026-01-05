@@ -1,17 +1,19 @@
 // redis.mjs
-import Redis from "redis";
+import Redis from 'redis';
 
 class RedisClient {
   constructor() {
     this.client = Redis.createClient();
 
-    this.client.on("error", (err) => {
-      console.error("Redis error:", err);
+    this.client.on('error', (err) => {
+      console.error('Redis error:', err);
     });
   }
+
   isAlive() {
     return this.client.connected;
   }
+
   get(key) {
     return new Promise((resolve, reject) => {
       this.client.get(key, (err, reply) => {
@@ -20,10 +22,11 @@ class RedisClient {
       });
     });
   }
+
   set(key, value, duration) {
     return new Promise((resolve, reject) => {
       if (duration) {
-        this.client.set(key, value, "EX", duration, (err) => {
+        this.client.set(key, value, 'EX', duration, (err) => {
           if (err) reject(err);
           else resolve();
         });
@@ -35,6 +38,7 @@ class RedisClient {
       }
     });
   }
+
   del(key) {
     return new Promise((resolve, reject) => {
       this.client.del(key, (err) => {
