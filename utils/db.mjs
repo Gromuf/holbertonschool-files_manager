@@ -1,6 +1,8 @@
 // db.mjs
 
-import { MongoClient } from "mongodb";
+import mongodb from "mongodb";
+
+const { MongoClient } = mongodb;
 class DBClient {
   constructor() {
     const host = process.env.DB_HOST || "localhost";
@@ -18,13 +20,16 @@ class DBClient {
       }
     });
   }
+
   isAlive() {
     return !!this.db;
   }
+
   async nbUsers() {
     if (!this.db) return 0;
     return this.db.collection("users").countDocuments();
   }
+
   async nbFiles() {
     if (!this.db) return 0;
     return this.db.collection("files").countDocuments();
