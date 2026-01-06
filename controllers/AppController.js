@@ -10,6 +10,7 @@ class AppController {
       db: dbClient.isAlive(),
     });
   }
+
   static async getStats(req, res) {
     const users = await dbClient.nbUsers();
     const files = await dbClient.nbFiles();
