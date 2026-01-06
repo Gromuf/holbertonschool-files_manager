@@ -1,13 +1,8 @@
 // UsersController.js
 import sha1 from 'sha1';
-const redisClient = require('../utils/redis').default;
+
 const dbClient = require('../utils/db').default;
 
-const waitForDB = async () => {
-  while (!dbClient.db) {
-    await new Promise((resolve) => setTimeout(resolve, 50));
-  }
-};
 class UsersController {
   static async postNew(req, res) {
     const { email, password } = req.body;
@@ -19,8 +14,6 @@ class UsersController {
     if (!password) {
       return res.status(400).json({ error: 'Missing password' });
     }
-
-    await waitForDB();
 
     const user = await dbClient.db.collection('users').findOne({ email });
     if (user) {
