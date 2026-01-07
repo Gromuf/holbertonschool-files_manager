@@ -13,13 +13,13 @@ class AuthController {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const base64 = authHeader.split(" ")[1];
+      const base64 = authHeader.split(' ')[1];
       if (!base64) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
       const decoded = Buffer.from(base64, 'base64').toString();
-      const [email, password] = decoded.split(":");
+      const [email, password] = decoded.split(':');
 
       if (!email || !password) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -38,6 +38,7 @@ class AuthController {
       return res.status(401).json({ error: 'Unauthorized' });
     }
   }
+
   static async getDisconnect(req, res) {
     const token = req.headers['x-token'];
     if (!token) {
