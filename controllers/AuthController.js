@@ -7,8 +7,12 @@ import redisClient from '../utils/redis.mjs';
 
 class AuthController {
   static async getConnect(req, res) {
-    if (!dbClient.isAlive()) {
-      return res.status(500).json({ error: "Database not ready" });
+    if (!dbClient.db) {
+      // <-- AJOUTÉ (Mongo pas encore prêt)
+      return res.status(401).json({ error: 'Unauthorized' }); // <-- AJOUTÉ
+    }
+	if (!dbClient.isAlive()) {
+      return res.status(500).json({ error: 'Database not ready' });
     }
 	const authHeader = req.headers.authorization;
     if (!authHeader) {
