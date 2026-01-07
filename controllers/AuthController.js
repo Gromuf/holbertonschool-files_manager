@@ -1,9 +1,9 @@
 // AuthController.js
 
-import sha1 from 'sha1';
-import { v4 as uuidv4 } from 'uuid';
-import dbClient from '../utils/db.mjs';
-import redisClient from '../utils/redis.mjs';
+const sha1 = require('sha1');
+const { v4: uuidv4 } = require('uuid');
+const dbClient = require('../utils/db').default;
+const redisClient = require('../utils/redis').default;
 
 class AuthController {
   static async getConnect(req, res) {
@@ -54,4 +54,4 @@ class AuthController {
     return res.status(204).end();
   }
 }
-export default AuthController;
+module.exports = AuthController;

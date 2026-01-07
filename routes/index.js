@@ -1,9 +1,9 @@
 // index.js
 
-import express from 'express';
-import AppController from '../controllers/AppController.js';
-import UsersController from '../controllers/UsersController.js';
-import AuthController from '../controllers/AuthController.js';
+const express = require('express');
+const AppController = require('../controllers/AppController');
+const UsersController = require('../controllers/UsersController');
+const AuthController = require('../controllers/AuthController');
 
 const router = express.Router();
 

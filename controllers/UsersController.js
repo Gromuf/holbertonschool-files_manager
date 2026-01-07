@@ -1,9 +1,9 @@
 // UsersController.js
 
-import sha1 from 'sha1';
-import { ObjectId } from 'mongodb';
-import dbClient from '../utils/db.mjs';
-import redisClient from '../utils/redis.mjs';
+const sha1 = require('sha1');
+const { ObjectId } = require('mongodb');
+const dbClient = require('../utils/db').default;
+const redisClient = require('../utils/redis').default;
 
 class UsersController {
   static async postNew(req, res) {
@@ -54,4 +54,4 @@ class UsersController {
   }
 }
 
-export default UsersController;
+module.exports = UsersController;
