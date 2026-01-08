@@ -45,7 +45,7 @@ class FilesController {
         name,
         type,
         isPublic,
-        parentId,
+        parentId: parentId === '0' ? 0 : parentId,
       };
       if (type === 'folder') {
         fileDoc.parentId = parentId;
@@ -59,7 +59,7 @@ class FilesController {
         name,
         type,
         isPublic,
-        parentId,
+        parentId: parentId === '0' ? 0 : parentId,
       });
     } catch (err) {
       return res.status(500).json({ error: 'Server error' });
