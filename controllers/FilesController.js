@@ -49,7 +49,7 @@ class FilesController {
         isPublic,
         parentId: parentId === '0' ? 0 : parentId,
       };
-      if (type === 'folder') {
+      if (type !== 'folder') {
         const folderPath = 
 		  process.env.FOLDER_PATH || '/tmp/files_manager';
 		fs.mkdirSync(folderPath, { recursive: true });
