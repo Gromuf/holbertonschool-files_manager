@@ -32,7 +32,6 @@ class FilesController {
         }
         parent = await dbClient.db.collection('files').findOne({
           _id: new ObjectId(parentId),
-          userId,
         });
         if (!parent) {
           return res.status(400).json({ error: 'Parent not found' });
