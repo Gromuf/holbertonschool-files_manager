@@ -28,7 +28,7 @@ class FilesController {
 	if (parentId !== '0') {
 	  parent = await dbClient.db.collection('files').findOne({
 		_id: new ObjectId(parentId),
-		userId: new ObjectId(userId),
+		userId,
 	  });
 	  if (!parent) {
 		return res.status(400).json({ error: 'Parent not found' });
@@ -38,10 +38,11 @@ class FilesController {
 	  }
 	}
 	const fileDoc = {
-	  userId: new ObjectId(userId),
+	  userId,
 	  name,
 	  type,
 	  isPublic,
+	  parentId,
 	};
 	if (type === 'folder') {
 	  fileDoc.parentId = parentId;
