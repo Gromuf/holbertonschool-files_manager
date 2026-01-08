@@ -17,7 +17,9 @@ class FilesController {
       if (!userId) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
-      const { name, type, parentId = '0', isPublic = false, data } = req.body;
+      const {
+		name, type, parentId = '0', isPublic = false, data
+	  } = req.body;
       if (!name) {
         return res.status(400).json({ error: 'Missing name' });
       }
@@ -50,12 +52,12 @@ class FilesController {
         parentId: parentId === '0' ? 0 : parentId,
       };
       if (type !== 'folder') {
-        const folderPath = 
-		  process.env.FOLDER_PATH || '/tmp/files_manager';
-		fs.mkdirSync(folderPath, { recursive: true });
-		const localPath = path.join(folderPath, new ObjectId().toString());
-		fs.writeFileSync(localPath, Buffer.from(data, 'base64'));
-		fileDoc.localPath = localPath;
+        const folderPath =
+          process.env.FOLDER_PATH || '/tmp/files_manager';
+        fs.mkdirSync(folderPath, { recursive: true });
+        const localPath = path.join(folderPath, new ObjectId().toString());
+        fs.writeFileSync(localPath, Buffer.from(data, 'base64'));
+        fileDoc.localPath = localPath;
       }
       const result = await dbClient.db.collection('files').insertOne(fileDoc);
       return res.status(201).json({
