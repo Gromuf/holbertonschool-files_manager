@@ -18,8 +18,8 @@ class FilesController {
         return res.status(401).json({ error: 'Unauthorized' });
       }
       const {
-		name, type, parentId = '0', isPublic = false, data
-	  } = req.body;
+        name, type, parentId = '0', isPublic = false, data,
+      } = req.body;
       if (!name) {
         return res.status(400).json({ error: 'Missing name' });
       }
@@ -52,8 +52,7 @@ class FilesController {
         parentId: parentId === '0' ? 0 : parentId,
       };
       if (type !== 'folder') {
-        const folderPath =
-          process.env.FOLDER_PATH || '/tmp/files_manager';
+        const folderPath = process.env.FOLDER_PATH || '/tmp/files_manager';
         fs.mkdirSync(folderPath, { recursive: true });
         const localPath = path.join(folderPath, new ObjectId().toString());
         fs.writeFileSync(localPath, Buffer.from(data, 'base64'));
