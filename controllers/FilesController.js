@@ -1,6 +1,8 @@
 // FilesController.js
 
 const { ObjectId } = require('mongodb');
+const fs = require('fs');
+const path = require('path');
 const dbClient = require('../utils/db').default;
 const redisClient = require('../utils/redis').default;
 
@@ -48,9 +50,12 @@ class FilesController {
         parentId: parentId === '0' ? 0 : parentId,
       };
       if (type === 'folder') {
-        fileDoc.parentId = parentId;
-      } else {
-        fileDoc.data = data;
+        const folderPath = 
+		  process.env.FOLDER_PATH || '/tmp/files_manager';
+		fs.mkdirSync(folderPath, { recursive: true });
+		const localPath = path.join(folderPath, new ObjectId().toString());
+		fs.writeFileSync(localPath, Buffer.from(data, 'base64'));
+		fileDoc.localPath = localPath;
       }
       const result = await dbClient.db.collection('files').insertOne(fileDoc);
       return res.status(201).json({
