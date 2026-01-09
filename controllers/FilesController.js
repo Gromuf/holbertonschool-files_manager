@@ -78,12 +78,17 @@ class FilesController {
       if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
+      const userId = await redisClient.get(`auth_${token}`);
+      if (!userId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
       const { id } = req.params;
       if (!ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Not found' });
       }
       const file = await dbClient.db.collection('files').findOne({
         _id: new ObjectId(id),
+        userId,
       });
       if (!file) {
         return res.status(404).json({ error: 'Not found' });
