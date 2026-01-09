@@ -120,7 +120,7 @@ class FilesController {
       const query = {
         userId: new ObjectId(userId),
         parentId: parentId === '0'
-          ? 0
+          ? '0'
           : new ObjectId(parentId),
       };
       const files = await dbClient.db.collection('files')
