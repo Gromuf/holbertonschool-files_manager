@@ -118,7 +118,11 @@ class FilesController {
       }
       const { parentId = '0', page = 0 } = req.query;
       const query = { userId: new ObjectId(userId) };
-      query.parentId = parentId;
+      if (parentId === '0') {
+        query.parentId = 0;
+      } else {
+        query.parentId = new ObjectId(parentId);
+      }
       const files = await dbClient.db.collection('files')
         .find(query)
         .sort({ _id: 1 })
