@@ -131,7 +131,15 @@ class FilesController {
         .skip(Number(page) * 20)
         .limit(20)
         .toArray();
-      return res.status(200).json(files);
+      const formattedFiles = files.map((file) => ({
+        id: file._id.toString(),
+        userId: file.userId.toString(),
+        name: file.name,
+        type: file.type,
+        isPublic: file.isPublic,
+        parentId: file.parentId,
+      }));
+      return res.status(200).json(formattedFiles);
     } catch (err) {
       return res.status(500).json({ error: 'Server error' });
     }
