@@ -117,12 +117,12 @@ class FilesController {
         return res.status(401).json({ error: 'Unauthorized' });
       }
       const { parentId = '0', page = 0 } = req.query;
-      const query = { userId: new ObjectId(userId) };
-      if (parentId === '0') {
-        query.parentId = 0;
-      } else {
-        query.parentId = new ObjectId(parentId);
-      }
+      const query = {
+        userId: new ObjectId(userId),
+        parentId: parentId === '0'
+          ? 0
+          : new ObjectId(parentId),
+      };
       const files = await dbClient.db.collection('files')
         .find(query)
         .sort({ _id: 1 })
