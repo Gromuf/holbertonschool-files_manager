@@ -116,8 +116,8 @@ class FilesController {
       if (!userId) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
-      const { parentId = '0' } = req.query;
-      const query = { userId };
+      const { parentId = '0', page = 0 } = req.query;
+      const query = { userId: new ObjectId(userId) };
       if (parentId === '0') {
         query.parentId = 0;
       } else {
@@ -126,7 +126,11 @@ class FilesController {
         }
         query.parentId = parentId;
       }
-      const files = await dbClient.db.collection('files').find(query).toArray();
+      const files = await dbClient.db.collection('files')
+        .find(query)
+        .skip(Number(page) * 20)
+        .limit(20)
+        .toArray();
       return res.status(200).json(files);
     } catch (err) {
       return res.status(500).json({ error: 'Server error' });
