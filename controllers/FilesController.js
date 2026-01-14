@@ -2,7 +2,7 @@
 
 const { ObjectId } = require('mongodb');
 const fs = require('fs');
-const mine = require('mime-types');
+const mime = require('mime-types');
 const path = require('path');
 const dbClient = require('../utils/db').default;
 const redisClient = require('../utils/redis').default;
@@ -235,11 +235,11 @@ class FilesController {
       if (!file.isPublic) {
         const token = req.headers['x-token'];
         if (!token) {
-          return res.status(401).json({ error: 'not found' });
+          return res.status(404).json({ error: 'Not found' });
         }
         const userId = await redisClient.get(`auth_${token}`);
         if (!userId || userId !== file.userId.toString()) {
-          return res.status(401).json({ error: 'not found' });
+          return res.status(404).json({ error: 'Not found' });
         }
       }
       if (file.type === 'folder') {
@@ -249,7 +249,7 @@ class FilesController {
         return res.status(404).json({ error: 'Not found' });
       }
       const fileContent = fs.readFileSync(file.localPath);
-      const mimeType = mine.lookup(file.name) || 'application/octet-stream';
+      const mimeType = mime.lookup(file.name) || 'application/octet-stream';
       res.setHeader('Content-Type', mimeType);
       return res.status(200).send(fileContent);
     } catch (err) {
